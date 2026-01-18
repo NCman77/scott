@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="智能背誦遮罩工具 - AI驅動的試卷標註系統">
+    <title>智能背誦遮罩 | Smart Mask Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript"
+        src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=V3KLIcokREdYKNKSnZsdIddtrpWVix6zv1H4vGN8PeEpV1FC9Zio1Cdo6vnmT2kAKPgp4ex9_KoXNRIT5RZ3DtjflwT1ZN9zOdzhtLzjbzB8REF849VbNu5nUMT1cE2iJxyqsEaWb_Y5Rozb7q3rOgId2V6isn8wD9tsa3oFOu8AC_4JMTG6H0zFf4unFP6okbPfCphDI2lDjNYjBm80dE0N_kg0B3HwT1GiwmbtgEu8Bt3uM3KY0PxPPnKw--8APd4eHeKWlO4iPakBN4eDYHGPxfSG78adBLNv9kjrTWTAb80Dk5jWTX1CwgHR_sfLwLkjuMFu8PUvjm1gNAAehK2yLogPkLhWBMfDB7yk0y4uFSVKFGAeEGATAAe7EOTc2UdL_XS-qmHmz9yNNZZJnax4PhN6Neqv2Fld5xjU4yKGISEBAxzansATobfiEUf_Bm7L0S8QwDW3KAndtAfMqLjdMVDAwt8G8xgbLm9eUssXpHzhMPMXJpHA325PbFxRxTdH1VHQsB-4hR7Relg5wYeAjfis-w7rbbAWAbH_6oXQ1Zo4D1OldWkzRVytRn_A7s_JsWbC_57i328osOHTY7y0GkypNi4AmsqHkM3vcGc9lE8gqZUvXhcawBbpfYtin66we4ypwRygjFvkAQrOmSbx7M8wj-xLWfZlnduZkzoDgAmIyM9aER6sQddSQvhYe17y3n33sIpXRgc0qPFdXzYjDG_MLhqyZy42ju_x9EPSYrZbbKWgWzmR96cEhEoQoVblLfHbDij4VIq6ofEwZK0b932LjV2fP4-ISSPI4BmJzwhUByBr0WgSTqYOHOBPCVQ11uTQL09iCh6DAawOlZeZs_L9Dfd1SPzHPLiggpkCj4wp-j5yCv-WzS951K1u3uevtsgbWKApcIBd_gu60xnZ4iREVzieU9WWWfvFxYBLMKNpdHoEdjTCAvm2tVpEXTLrnUotpYE9qRKX8eFsdY4S39QH778pSMDASLJ-0J50oPkOp3t4t4TGHFJFKaNg0gh0Ni4uPAxC3xfKK6ZRD0rObahNZJOg4MzZ1fkdsUK9ammEDOBkpHNsczxBaVlRBnQZJlEjY2GoslBvQrm5vQsyrpkT62RcAQdyTqSKJ-DvC6u1Swi340fZQ1dgw8c2VN9UE4rZlSZvu5k-RXbPsGFk3qrEN9QwlQ_Hee_DuUqwD-Da4BbpAjKMtiBsppnPsQj1mnfRP0HDRW3IQE1T8eYs9zL9Z-MamAiRQoOmsvJ-nXsy6uYS8ouMScTHrz-yqMbZQfDjOCo529T4pOKAefl7OmMBzcf1Jvfk0FGKQUotImPQ7gU2BlQNIzrhiId5FB0EHEK9Ua-WOqmsqD_sLKTEJX0SB0E4y0PlrrxEI_RCucWqftOhl8aVfHB8WvF-KaockFqG0Y0kDS80yu8JvUWlghVb34IQ09FQv3a-lC5zNiETHCtH7WB2rf1cV-nJQISboKfhUAUMlMGPEmjddYOU6vYrRCWCqewjRw8YZyXeuaB_rvfdPRk9gA_M5OjvEGs9P9s4ITnAlxk-BxVSDVUddT4qde6EKZOrIU8D41mr1-TSAbvEWrV49FY05QkREPJkCg--_J_7CI88qrYRaID4klS7-AmVkqBvAAqsGRIncz5RapSnKWIu8ggxRxcx4de4GQ-qUWAbjw2PlefSVh36tczA4I8abp55fQXdi4BAmmAgD6l0Q8y6ei0TqJyQf8EJokrYfz3JLBTYTRvjPcEoHLW6h_WrV5RZQ7LMGoQcsc5zvUQ4Af-3x1ROg9joXc4949ccWcG7GoLSD_Ex0yZuEdSsXW8kExNMBwhJ6tSKH7YoSCFKLBJxcirijnju7FolzqlhEjrBhmZX4SV45wcl6qxeTwfi6Dmavl6WAuqA-MnJhNirze3hXVYRzeyLDhCJKL_blTTOYjcMBfMzCSMO-X8QmpH8GHq4Prq7FJMKgGfyL54b9Wy6nhOx5RL2615-9JSGf51IQOo91Zi1_GFoe8GBqI9Av0qsrmTc7-7_39-4aeytcwOycdDjE2yHqQ28Ft4YlSMHX_C1DJ8L8wI6O08a2bZiut8UXk-AfMfjrq_uIQHsXTaR1e7gbH_U-0x93Hh4DvFI2-ZsYHQIr2Rpne83hC-4mpWe3fP6cj4RSEdDqXgiczHheHtJwkSWjpCVXCWiL4f_6KjS6Zo6JxVihN9FaqUeZQhpPzo1Ra60BpQe8RnTG3n0disYpJaK"
+        charset="UTF-8"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <div class="flex items-center gap-2">
+            <div class="app-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                    <path
+                        d="M12 2l-9.5 5.2 9.5 5.3 9.5-5.3zM2.5 9.7l9.5 5.3 9.5-5.3-1.6-.9-7.9 4.4-7.9-4.4zM2.5 14.5l9.5 5.3 9.5-5.3-1.6-.9-7.9 4.4-7.9-4.4z" />
+                </svg>
+            </div>
+            <div>
+                <h1>試卷遮罩 <span>Smart Mask</span></h1>
+                <p class="tag">AI & Handwriting</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-1 justify-center header-api-section">
+            <div class="input-group">
+                <input type="password" id="header-api-key" class="input-field"
+                    placeholder="Gemini API Key (貼上後請按右側儲存 | Save after paste)" aria-label="API Key輸入">
+                <button id="save-api-key-btn" class="btn-icon-only" title="確認儲存 Key | Confirm Save"
+                    aria-label="儲存API Key">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
+                    </svg>
+                </button>
+            </div>
+            <button id="ai-detect-btn" class="btn btn-primary">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M7.5 5.6L10 7 7.5 8.4 6.1 10.9 4.7 8.4 2.2 7 4.7 5.6 6.1 3.1zM19.3 8.4l-2.5-1.4 1.4-2.5-1.4-2.5-2.5 1.4-2.5-1.4 1.4 2.5-1.4 2.5 2.5-1.4 2.5 1.4zM13.4 5.9l-1.3 2.2-2.3-1.3 1.3 2.3-1.3 2.2 2.3-1.3 1.3 2.3 1.3-2.2 2.3 1.3-1.3-2.3 1.3-2.2-2.3 1.3zM16 12l-2.2 4h-4L16 24l6.2-8h-4z" />
+                </svg>
+                <span>偵測 | AI Detect</span>
+            </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <input type="file" id="imageLoader" accept="image/*" multiple class="hidden" aria-label="選擇圖片">
+            <button id="import-btn" class="btn" title="匯入圖片 | Import Images">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                </svg>
+                <span>匯入 | Import</span>
+            </button>
+            <button id="save-project-btn" class="btn" title="儲存專案 | Save Project">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z" />
+                </svg>
+                <span>儲存 | Save</span>
+            </button>
+            <input type="file" id="projectLoader" accept=".json" class="hidden" aria-label="選擇專案檔">
+            <button id="load-project-btn" class="btn" title="讀取專案 | Load Project">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z" />
+                </svg>
+                <span>讀取 | Load</span>
+            </button>
+
+            <button id="toggle-sidebar-btn" class="btn" title="頁面清單 | Page List">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+                <span>頁面 | Pages</span>
+            </button>
+
+            <div class="vertical-divider"></div>
+
+            <button id="fullscreen-btn" class="btn" title="全螢幕模式 | Full Screen">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                </svg>
+                <span>全螢幕 | View</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-1 flex relative">
+        <!-- Tools -->
+        <div class="toolbar">
+            <button id="btn-view" data-mode="view" class="tool-btn active" title="瀏覽 | View (V)">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 9v4H6V9H4v6h16V9zM6 15h12v2H6z" />
+                </svg>
+                <span>View</span>
+            </button>
+            <div class="divider"></div>
+            <button id="btn-rect" data-mode="rect" class="tool-btn" title="方框 | Box (R)">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 3h18v18H3z" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Box</span>
+            </button>
+
+            <!-- 筆刷按鈕 + 彈出式大小調整 -->
+            <div class="brush-container">
+                <button id="btn-brush" data-mode="brush" class="tool-btn" title="筆刷 | Brush (B)">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.79-3-4-3zm13.71-9.37l-1.34-1.34c-.39-.39-1.02-.39-1.41 0L9 11.25 12.75 15l8.96-8.96c.39-.39.39-1.02 0-1.41z" />
+                    </svg>
+                    <span>Brush</span>
+                </button>
+                <!-- 彈出式筆刷大小滑桿 -->
+                <div id="brush-size-popup" class="brush-size-popup hidden">
+                    <div class="brush-size-label" id="brush-size-value">20</div>
+                    <input type="range" id="brush-size-slider" min="5" max="80" value="20" orient="vertical"
+                        class="brush-slider">
+                    <div class="brush-size-preview">
+                        <div id="brush-preview-circle" class="brush-preview-circle"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 顏色選擇器 -->
+            <div class="color-palette">
+                <div class="color-swatch active" style="background-color: #44403c;" data-color="#44403c"
+                    title="黑色 | Black"></div>
+                <div class="color-swatch" style="background-color: #ef4444;" data-color="#ef4444" title="紅色 | Red">
+                </div>
+                <div class="color-swatch" style="background-color: #3b82f6;" data-color="#3b82f6" title="藍色 | Blue">
+                </div>
+                <div class="color-swatch" style="background-color: #22c55e;" data-color="#22c55e" title="綠色 | Green">
+                </div>
+                <div class="color-swatch" style="background-color: #ffffff;" data-color="#ffffff" title="白色 | White">
+                </div>
+                <div class="color-swatch custom-color" id="custom-color-swatch" title="自訂 | Custom">
+                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;">
+                        <path
+                            d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+                    </svg>
+                    <input type="color" id="custom-color-picker" class="hidden" value="#44403c">
+                </div>
+            </div>
+
+            <div class="divider"></div>
+            <button id="btn-eraser" data-mode="eraser" class="tool-btn" title="擦除 | Eraser (E)">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M15.14 3c-.51 0-1.02.2-1.41.59L2.59 14.73c-.78.78-.78 2.05 0 2.83L5.17 20c.78.78 2.05.78 2.83 0l11.14-11.14c.79-.78.79-2.05 0-2.83l-2.58-2.58C16.16 3.2 15.65 3 15.14 3z" />
+                </svg>
+                <span>Erase</span>
+            </button>
+
+            <div class="divider"></div>
+
+            <button id="btn-undo" class="tool-btn" title="復原 | Undo (Ctrl+Z)" disabled>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" />
+                </svg>
+                <span>Undo</span>
+            </button>
+            <button id="btn-redo" class="tool-btn" title="重做 | Redo (Ctrl+Y)" disabled>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z" />
+                </svg>
+                <span>Redo</span>
+            </button>
+        </div>
+
+        <!-- Canvas Area -->
+        <div id="canvas-wrapper">
+            <div id="welcome-msg">
+                <div style="font-size:40px; opacity:0.3; margin-bottom:10px;">📄</div>
+                <h2>匯入試卷 | Import Exam</h2>
+                <p style="font-size:12px; margin-top:5px;">支援多選匯入 / 自動適應 / 雙指縮放<br>Multi-import / Auto-fit / Pinch Zoom
+                </p>
+                <div
+                    style="margin-top:15px; font-size:11px; color:#a8a29e; background:#f5f5f4; padding:5px 10px; border-radius:15px; display:inline-block;">
+                    iPad 提示：全螢幕下「長按」可退出，左右滑動換頁<br>iPad Tip: Long press to exit fullscreen, swipe to change page
+                </div>
+            </div>
+            <div id="canvas-container">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+
+        <!-- Zoom Controls -->
+        <div id="zoom-controls">
+            <button id="zoom-in-btn" class="zoom-btn" title="放大 | Zoom In">+</button>
+            <div id="zoom-level-text" class="zoom-text">100%</div>
+            <button id="zoom-out-btn" class="zoom-btn" title="縮小 | Zoom Out">-</button>
+            <button id="zoom-fit-btn" class="zoom-btn fit-btn" title="適應視窗 | Fit">Fit</button>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar-panel" class="sidebar">
+            <div class="sidebar-header">
+                <span style="font-weight:bold; font-size:12px; letter-spacing:1px; color:#57534e;">PAGES (頁面)</span>
+                <button id="close-sidebar-btn" class="icon-btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                        <path
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                </button>
+            </div>
+            <div id="page-list" class="page-list"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Controls -->
+    <div class="bottom-bar">
+        <div id="page-nav" class="page-nav">
+            <button id="prev-page-btn" class="nav-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                </svg>
+            </button>
+            <span id="page-indicator">0 / 0</span>
+            <button id="next-page-btn" class="nav-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="control-panel">
+            <div class="flex items-center gap-2">
+                <span style="font-size:12px;">背誦 | Quiz</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-quiz">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="control-divider"></div>
+            <button id="toggle-masks-btn" class="control-btn">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <path
+                        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                </svg>
+                <span id="toggle-text">顯示 | Show</span>
+            </button>
+            <button id="clear-masks-btn" class="control-btn" style="color:#fca5a5;">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                </svg>
+                <span>清除 | Clear</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Fullscreen Exit Button -->
+    <button id="exit-fullscreen-btn">退出 (Exit) | Esc / Long Press</button>
+
+    <!-- Toast & Loading -->
+    <div id="toast"></div>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p id="loading-text">Loading...</p>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>
