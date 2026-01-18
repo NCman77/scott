@@ -450,12 +450,12 @@ class SmartMaskApp {
         this.canvas.addEventListener('mouseup', (e) => this.drawingManager.handleMouseUp(e));
         this.canvas.addEventListener('mouseleave', (e) => this.drawingManager.handleMouseUp(e));
 
-        this.canvas.addEventListener('touchstart', (e) => this.drawingManager.handleTouchStart(e));
-        this.canvas.addEventListener('touchmove', (e) => this.drawingManager.handleTouchMove(e));
+        this.canvas.addEventListener('touchstart', (e) => this.drawingManager.handleTouchStart(e), { passive: false });
+        this.canvas.addEventListener('touchmove', (e) => this.drawingManager.handleTouchMove(e), { passive: false });
         this.canvas.addEventListener('touchend', (e) => this.drawingManager.handleTouchEnd(e));
 
-        this.canvas.addEventListener('touchstart', (e) => this.handleFullscreenSwipe(e, 'start'));
-        this.canvas.addEventListener('touchend', (e) => this.handleFullscreenSwipe(e, 'end'));
+        this.canvas.addEventListener('touchstart', (e) => this.handleFullscreenSwipe(e, 'start'), { passive: true });
+        this.canvas.addEventListener('touchend', (e) => this.handleFullscreenSwipe(e, 'end'), { passive: true });
     }
 
     initBrushSizeControl() {
@@ -701,7 +701,7 @@ class APIManager {
     }
 
     async callGemini(apiKey, base64Image) {
-        // 修正 API 路徑：使用 v1 而非 v1beta
+        // 使用 v1 API（穩定版本）
         const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
         const response = await fetch(url, {
@@ -711,7 +711,7 @@ class APIManager {
                 contents: [{
                     parts: [
                         {
-                            text: "Analyze this image and identify all handwritten text regions. Ignore printed text. Return JSON with 'boxes' key containing list of [ymin, xmin, ymax, xmax] (0-1000 scale)."
+                            text: "請分析這張圖片，找出所有手寫文字區域（忽略印刷文字）。以 JSON 格式回應，包含一個 'boxes' 陣列，每個元素是 [ymin, xmin, ymax, xmax]，座標範圍 0-1000。範例：{\"boxes\": [[100, 200, 300, 400]]}"
                         },
                         {
                             inline_data: {
@@ -720,10 +720,8 @@ class APIManager {
                             }
                         }
                     ]
-                }],
-                generationConfig: {
-                    response_mime_type: "application/json"
-                }
+                }]
+                // v1 API 不支援 response_mime_type，改用文字解析
             })
         });
 
@@ -736,8 +734,21 @@ class APIManager {
         const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if (textContent) {
-            const parsed = JSON.parse(textContent);
-            return parsed.boxes || [];
+            try {
+                // 嘗試解析 JSON（可能包含在 markdown 程式碼區塊中）
+                let jsonText = textContent.trim();
+
+                // 移除可能的 markdown 程式碼區塊標記
+                if (jsonText.startsWith('```')) {
+                    jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*/g, '');
+                }
+
+                const parsed = JSON.parse(jsonText);
+                return parsed.boxes || [];
+            } catch (parseError) {
+                console.error('JSON 解析錯誤:', parseError, '\n原始文字:', textContent);
+                return [];
+            }
         }
 
         return [];
