@@ -478,25 +478,23 @@ class SmartMaskApp {
             updatePreview(parseInt(e.target.value));
         });
 
-        // 觸控設備：單擊彈出滑桿（優化）
-        if (!window.matchMedia('(hover: hover)').matches) {
-            brushBtn.addEventListener('click', (e) => {
-                // 延遲處理，避免與工具切換衝突
-                setTimeout(() => {
-                    if (this.mode === TOOL_MODES.BRUSH) {
-                        popup.classList.toggle('show');
-                    }
-                }, 100);
-                e.stopPropagation();
-            });
-
-            // 點擊其他地方關閉彈窗
-            document.addEventListener('click', (e) => {
-                if (!popup.contains(e.target) && !brushBtn.contains(e.target)) {
-                    popup.classList.remove('show');
+        // 所有設備：單擊筆刷按鈕彈出滑桿
+        brushBtn.addEventListener('click', (e) => {
+            // 延遲處理，避免與工具切換衝突
+            setTimeout(() => {
+                if (this.mode === TOOL_MODES.BRUSH) {
+                    popup.classList.toggle('show');
                 }
-            });
-        }
+            }, 100);
+            e.stopPropagation();
+        });
+
+        // 點擊其他地方關閉彈窗
+        document.addEventListener('click', (e) => {
+            if (!popup.contains(e.target) && !brushBtn.contains(e.target)) {
+                popup.classList.remove('show');
+            }
+        });
 
         updatePreview(CONFIG.BRUSH_SIZE_DEFAULT);
     }
