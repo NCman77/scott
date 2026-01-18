@@ -312,6 +312,12 @@ h1 span {
     transform: translateX(-10px);
 }
 
+.brush-size-popup.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+}
+
 .brush-size-label {
     font-size: 13px;
     font-weight: 600;
