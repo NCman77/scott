@@ -707,15 +707,45 @@ class APIManager {
         const model = 'gemini-2.5-flash';  // 推薦：速度快、準確度高
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
+        // 優化 Prompt：專門針對手寫試卷（大幅提升準確度）
+        const prompt = `你是專業的試卷分析專家，擅長辨識考試試卷上的所有內容，特別是手寫部分。
+
+請分析這張試卷圖片，找出所有需要遮罩的區域：
+- **優先偵測手寫內容**：手寫答案、手寫題號、手寫註記、手寫圈選、手寫塗鴉
+- 題目區域：題幹、選項、答案欄、作圖區、計算過程
+- 忽略：純裝飾元素（頁碼、邊框、水印、標題）
+
+輸出嚴格 JSON 格式（不能有多餘文字或 markdown 標記）：
+{
+  "boxes": [
+    [ymin, xmin, ymax, xmax],
+    [ymin, xmin, ymax, xmax]
+  ]
+}
+
+座標範圍：0-1000（整數）
+- ymin: 區域上邊界（距離圖片頂部）
+- xmin: 區域左邊界（距離圖片左側）
+- ymax: 區域下邊界
+- xmax: 區域右邊界
+
+重要規則：
+1. 每個手寫答案或題目獨立框選
+2. 框要精準包住內容（不要太大或太小）
+3. 手寫部分優先級最高
+4. 支援中英文手寫、數字、符號
+5. 如果圖片空白無內容，回傳 {"boxes": []}
+
+範例輸出：
+{"boxes": [[100, 50, 200, 300], [250, 50, 350, 300]]}`;
+
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{
                     parts: [
-                        {
-                            text: "請分析這張圖片，找出所有手寫文字區域（忽略印刷文字）。以 JSON 格式回應，包含一個 'boxes' 陣列，每個元素是 [ymin, xmin, ymax, xmax]，座標範圍 0-1000。範例：{\"boxes\": [[100, 200, 300, 400]]}"
-                        },
+                        { text: prompt },
                         {
                             inline_data: {
                                 mime_type: "image/jpeg",
