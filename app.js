@@ -701,8 +701,8 @@ class APIManager {
     }
 
     async callGemini(apiKey, base64Image) {
-        // 使用 v1 API（穩定版本）
-        const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        // 使用 v1beta API（gemini-1.5-flash 只在此版本可用）
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
         const response = await fetch(url, {
             method: 'POST',
