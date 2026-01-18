@@ -701,21 +701,16 @@ class APIManager {
     }
 
     async callGemini(apiKey, base64Image) {
-        // 使用最新 Gemini 3 Flash Preview（2025/12 最新，手寫/Vision 超強）
-        // 如果出錯，會自動降級到 gemini-2.5-flash
-        let model = 'gemini-3-flash-preview';  // 最推薦：vision/multimodal 接近人類水平
-        let url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        // 使用穩定版 Gemini 2.5 Flash（2026 最新穩定版，絕對可用）
+        const model = 'gemini-2.5-flash';  // 手寫填空超準，免費額度夠用
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-        // 專業 Prompt：針對英文試卷優化（word bank、箭頭、圈選、垂直布局）
-        const prompt = `你是專業的考試試卷分析AI，專門偵測印刷題目 + 各種手寫答案（成人工整連筆/下劃線/箭頭，或兒童歪扭塗鴉/圈選/簡單圖畫）。
+        // 專注填空答案的 Prompt（只框答案，不框題目）
+        const prompt = `你是試卷填空答案偵測專家，專門找圖片中的填空線（____ 、_____ 、底線、空白欄）或手寫填空區域。
 
-圖片是英文試卷，可能包含：
-- 印刷題幹、題號、word bank（單字框）、選項、填空線、圖片（如動物）
-- 手寫答案：填詞、圈選數字/選項/圖畫、下劃線、箭頭指向正確答案、塗改
+圖片是試卷，只偵測填空答案部分（手寫或印刷答案在線上/旁邊），忽略題幹文字。
 
-任務：為每個獨立題目（從題號開始到下一個題號前）產生精準矩形框，必須包含相關手寫答案（箭頭、圈選、下劃線、填空）。
-
-輸出嚴格 JSON（無任何多餘文字）：
+輸出嚴格 JSON（無多餘文字）：
 {
   "boxes": [
     [ymin, xmin, ymax, xmax],
@@ -725,15 +720,13 @@ class APIManager {
 
 座標範圍：0-1000（整數）
 
-規則（很重要）：
-- 框緊貼題目內容 + 手寫答案，不要太大或合併多題
-- 箭頭/下劃線/圈選必須包含進框（視為答案一部分）
-- word bank 如果被箭頭指向，包含相關部分
-- 垂直排列題目要分開偵測
-- 忽略標頭/簽名/頁碼/分數等非題目區
-- 支援中英文手寫、數字、符號
-- 如果無手寫，也框印刷題目
-- 如果圖片空白，回傳 {"boxes": []}
+規則：
+- 框緊貼填空線 + 手寫答案（包含圈選、箭頭指向答案）
+- 如果是 word bank 箭頭指向，框箭頭末端答案
+- 支援成人整齊手寫或兒童歪扭塗鴉
+- 只框答案區，不要框題目文字
+- 每個填空獨立一個小框
+- 如果無填空，回傳 {"boxes": []}
 
 範例：{"boxes": [[100, 50, 200, 300], [250, 50, 350, 300]]}`;
 
@@ -752,48 +745,12 @@ class APIManager {
                         }
                     ]
                 }]
-                // v1beta API 不支援 response_mime_type，改用文字解析
             })
         });
 
-        // 如果 gemini-3-flash-preview 出錯（API Key 不支援），自動降級到 gemini-2.5-flash
         if (!response.ok) {
-            const errorText = await response.text();
-            if (errorText.includes('not found') || errorText.includes('not supported')) {
-                console.warn('gemini-3-flash-preview 不支援，降級到 gemini-2.5-flash');
-                model = 'gemini-2.5-flash';
-                url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-                const retryResponse = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [
-                                { text: prompt },
-                                {
-                                    inline_data: {
-                                        mime_type: "image/jpeg",
-                                        data: base64Image
-                                    }
-                                }
-                            ]
-                        }]
-                    })
-                });
-
-                if (!retryResponse.ok) {
-                    const retryError = await retryResponse.json();
-                    throw new Error(retryError.error?.message || 'API 請求失敗');
-                }
-
-                const retryData = await retryResponse.json();
-                const textContent = retryData.candidates?.[0]?.content?.parts?.[0]?.text;
-                return this.parseGeminiResponse(textContent);
-            } else {
-                const errorData = JSON.parse(errorText);
-                throw new Error(errorData.error?.message || 'API 請求失敗');
-            }
+            const errorData = await response.json();
+            throw new Error(errorData.error?.message || 'API 請求失敗');
         }
 
         const data = await response.json();
