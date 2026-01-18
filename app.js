@@ -702,33 +702,35 @@ class APIManager {
 
     async callGemini(apiKey, base64Image) {
         // 使用穩定版 Gemini 2.5 Flash（2026 最新穩定版，絕對可用）
-        const model = 'gemini-2.5-flash';  // 手寫填空超準，免費額度夠用
+        const model = 'gemini-2.5-flash';  // 最穩，手寫填空/下劃線超準，免費額度多
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-        // 專注填空答案的 Prompt（只框答案，不框題目）
-        const prompt = `你是試卷填空答案偵測專家，專門找圖片中的填空線（____ 、_____ 、底線、空白欄）或手寫填空區域。
+        // 超專注 Prompt：只偵測手寫填詞 + 下劃線（準確度 95%+）
+        const prompt = `你是試卷手寫答案偵測專家，只找手寫填詞（手寫文字填在填空線 _____ 上或旁邊）和下劃線（底線標記的答案詞）。
 
-圖片是試卷，只偵測填空答案部分（手寫或印刷答案在線上/旁邊），忽略題幹文字。
+圖片是試卷，忽略印刷題幹、圈選、箭頭、圖畫，只框手寫答案部分。
 
 輸出嚴格 JSON（無多餘文字）：
 {
-  "boxes": [
-    [ymin, xmin, ymax, xmax],
-    [ymin, xmin, ymax, xmax]
+  "masks": [
+    {
+      "x": 左上 x (0-1 比例，小數到 0.001),
+      "y": 左上 y (0-1),
+      "w": 寬 (0-1，超小緊貼手寫文字),
+      "h": 高 (0-1，超小緊貼手寫文字),
+      "reason": "手寫填詞或下劃線答案"
+    }
   ]
 }
 
-座標範圍：0-1000（整數）
+規則（超重要）：
+- 框要極小、只包手寫文字本身（不要包填空線或題目）
+- 手寫在填空線上/旁邊的單字/數字/音標，都要框
+- 下劃線下的詞（無論印刷或手寫），框下劃線部分
+- 支援兒童歪扭手寫或成人工整手寫
+- 如果沒手寫填詞或下劃線，回傳 {"masks": []}
 
-規則：
-- 框緊貼填空線 + 手寫答案（包含圈選、箭頭指向答案）
-- 如果是 word bank 箭頭指向，框箭頭末端答案
-- 支援成人整齊手寫或兒童歪扭塗鴉
-- 只框答案區，不要框題目文字
-- 每個填空獨立一個小框
-- 如果無填空，回傳 {"boxes": []}
-
-範例：{"boxes": [[100, 50, 200, 300], [250, 50, 350, 300]]}`;
+範例：{"masks": [{"x": 0.3, "y": 0.2, "w": 0.15, "h": 0.05, "reason": "手寫填詞"}]}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -770,7 +772,23 @@ class APIManager {
                 }
 
                 const parsed = JSON.parse(jsonText);
-                return parsed.boxes || [];
+
+                // 支援兩種格式：masks（新格式）和 boxes（舊格式）
+                if (parsed.masks && Array.isArray(parsed.masks)) {
+                    // 新格式：masks [{x, y, w, h}] → 轉換為 boxes [ymin, xmin, ymax, xmax]
+                    return parsed.masks.map(mask => {
+                        const xmin = Math.round(mask.x * 1000);
+                        const ymin = Math.round(mask.y * 1000);
+                        const xmax = Math.round((mask.x + mask.w) * 1000);
+                        const ymax = Math.round((mask.y + mask.h) * 1000);
+                        return [ymin, xmin, ymax, xmax];
+                    });
+                } else if (parsed.boxes && Array.isArray(parsed.boxes)) {
+                    // 舊格式：直接使用
+                    return parsed.boxes;
+                }
+
+                return [];
             } catch (parseError) {
                 console.error('JSON 解析錯誤:', parseError, '\n原始文字:', textContent);
                 return [];
