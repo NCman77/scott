@@ -701,20 +701,21 @@ class APIManager {
     }
 
     async callGemini(apiKey, base64Image) {
-        // 使用 Gemini 3 Flash（2026 最新版，手寫辨識接近人類水平）
-        const model = 'gemini-3-flash';  // 強烈推薦：速度快 + 手寫超強
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        // 使用最新 Gemini 3 Flash Preview（2025/12 最新，手寫/Vision 超強）
+        // 如果出錯，會自動降級到 gemini-2.5-flash
+        let model = 'gemini-3-flash-preview';  // 最推薦：vision/multimodal 接近人類水平
+        let url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-        // 專業 Prompt：同時處理成人+兒童手寫（根據顧問建議優化）
-        const prompt = `你是專業的試卷與手寫筆記分析專家，擅長辨識各種手寫風格：
-- 成人手寫：工整、連筆、速記、清晰數字/符號
-- 兒童手寫：歪扭、大小不均、塗鴉、圈選答案、畫箭頭、簡單圖畫
+        // 專業 Prompt：針對英文試卷優化（word bank、箭頭、圈選、垂直布局）
+        const prompt = `你是專業的考試試卷分析AI，專門偵測印刷題目 + 各種手寫答案（成人工整連筆/下劃線/箭頭，或兒童歪扭塗鴉/圈選/簡單圖畫）。
 
-圖片是考試試卷、講義或作業，可能同時包含印刷文字 + 手寫答案/標記。
+圖片是英文試卷，可能包含：
+- 印刷題幹、題號、word bank（單字框）、選項、填空線、圖片（如動物）
+- 手寫答案：填詞、圈選數字/選項/圖畫、下劃線、箭頭指向正確答案、塗改
 
-任務：偵測每個獨立題目區域（題幹 + 選項 + 手寫部分），每題單獨一個精準矩形框。盡量把相關手寫（圈選、填空、塗改）包含進同一框。
+任務：為每個獨立題目（從題號開始到下一個題號前）產生精準矩形框，必須包含相關手寫答案（箭頭、圈選、下劃線、填空）。
 
-輸出嚴格 JSON 格式（不能有多餘文字或 markdown）：
+輸出嚴格 JSON（無任何多餘文字）：
 {
   "boxes": [
     [ymin, xmin, ymax, xmax],
@@ -723,19 +724,16 @@ class APIManager {
 }
 
 座標範圍：0-1000（整數）
-- ymin: 區域上邊界
-- xmin: 區域左邊界  
-- ymax: 區域下邊界
-- xmax: 區域右邊界
 
-關鍵規則：
-1. 框要緊貼內容，不要太大或太小
-2. 優先包含所有手寫（成人或兒童風格）
-3. 圈選、塗鴉、箭頭、圖畫都視為手寫一部分
-4. 支援中英文手寫、數字、符號
-5. 每小題盡量分開框選
-6. 如果只有印刷體，也正常框題目
-7. 完全空白回傳 {"boxes": []}
+規則（很重要）：
+- 框緊貼題目內容 + 手寫答案，不要太大或合併多題
+- 箭頭/下劃線/圈選必須包含進框（視為答案一部分）
+- word bank 如果被箭頭指向，包含相關部分
+- 垂直排列題目要分開偵測
+- 忽略標頭/簽名/頁碼/分數等非題目區
+- 支援中英文手寫、數字、符號
+- 如果無手寫，也框印刷題目
+- 如果圖片空白，回傳 {"boxes": []}
 
 範例：{"boxes": [[100, 50, 200, 300], [250, 50, 350, 300]]}`;
 
@@ -754,18 +752,56 @@ class APIManager {
                         }
                     ]
                 }]
-                // v1 API 不支援 response_mime_type，改用文字解析
+                // v1beta API 不支援 response_mime_type，改用文字解析
             })
         });
 
+        // 如果 gemini-3-flash-preview 出錯（API Key 不支援），自動降級到 gemini-2.5-flash
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || 'API 請求失敗');
+            const errorText = await response.text();
+            if (errorText.includes('not found') || errorText.includes('not supported')) {
+                console.warn('gemini-3-flash-preview 不支援，降級到 gemini-2.5-flash');
+                model = 'gemini-2.5-flash';
+                url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+                const retryResponse = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: prompt },
+                                {
+                                    inline_data: {
+                                        mime_type: "image/jpeg",
+                                        data: base64Image
+                                    }
+                                }
+                            ]
+                        }]
+                    })
+                });
+
+                if (!retryResponse.ok) {
+                    const retryError = await retryResponse.json();
+                    throw new Error(retryError.error?.message || 'API 請求失敗');
+                }
+
+                const retryData = await retryResponse.json();
+                const textContent = retryData.candidates?.[0]?.content?.parts?.[0]?.text;
+                return this.parseGeminiResponse(textContent);
+            } else {
+                const errorData = JSON.parse(errorText);
+                throw new Error(errorData.error?.message || 'API 請求失敗');
+            }
         }
 
         const data = await response.json();
         const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        return this.parseGeminiResponse(textContent);
+    }
 
+    parseGeminiResponse(textContent) {
         if (textContent) {
             try {
                 // 嘗試解析 JSON（可能包含在 markdown 程式碼區塊中）
