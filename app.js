@@ -478,19 +478,21 @@ class SmartMaskApp {
             updatePreview(parseInt(e.target.value));
         });
 
-        // 觸控設備：單擊切換顯示（優化）
+        // 觸控設備：單擊彈出滑桿（優化）
         if (!window.matchMedia('(hover: hover)').matches) {
             brushBtn.addEventListener('click', (e) => {
-                // 如果已經是筆刷模式，切換彈窗
-                if (this.mode === TOOL_MODES.BRUSH) {
-                    popup.classList.toggle('show');
-                    e.stopPropagation();
-                }
+                // 延遲處理，避免與工具切換衝突
+                setTimeout(() => {
+                    if (this.mode === TOOL_MODES.BRUSH) {
+                        popup.classList.toggle('show');
+                    }
+                }, 100);
+                e.stopPropagation();
             });
 
             // 點擊其他地方關閉彈窗
             document.addEventListener('click', (e) => {
-                if (!popup.contains(e.target) && e.target !== brushBtn) {
+                if (!popup.contains(e.target) && !brushBtn.contains(e.target)) {
                     popup.classList.remove('show');
                 }
             });
@@ -1110,15 +1112,10 @@ class PageManager {
 
         this.app.drawingManager.draw();
 
-        // 修正：確保在繪製後才執行 fitToScreen
-        // 使用三層 RAF 確保渲染完成
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    this.app.uiManager.fitToScreen();
-                });
-            });
-        });
+        // 修正：確保圖片完整顯示（使用 setTimeout 確保渲染完成）
+        setTimeout(() => {
+            this.app.uiManager.fitToScreen();
+        }, 100);
     }
 }
 
