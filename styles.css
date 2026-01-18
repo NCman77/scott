@@ -11,8 +11,8 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-* { 
-    box-sizing: border-box; 
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -29,20 +29,61 @@ body {
 }
 
 /* ===== Utility Classes ===== */
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.justify-center { justify-content: center; }
-.gap-1 { gap: 4px; }
-.gap-2 { gap: 8px; }
-.gap-3 { gap: 12px; }
-.flex-1 { flex: 1; }
-.hidden { display: none !important; }
-.relative { position: relative; }
-.absolute { position: absolute; }
-.w-full { width: 100%; }
-.h-full { height: 100%; }
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.gap-1 {
+    gap: 4px;
+}
+
+.gap-2 {
+    gap: 8px;
+}
+
+.gap-3 {
+    gap: 12px;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
 
 /* ===== Header ===== */
 header {
@@ -67,7 +108,7 @@ header {
     justify-content: center;
 }
 
-h1 { 
+h1 {
     font-size: 1.1rem;
     font-weight: 700;
     color: #44403c;
@@ -116,8 +157,15 @@ h1 span {
     white-space: nowrap;
 }
 
-.btn:hover { background-color: #f5f5f4; }
-.btn svg { width: 16px; height: 16px; fill: currentColor; }
+.btn:hover {
+    background-color: #f5f5f4;
+}
+
+.btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
 
 .btn-primary {
     background-color: var(--accent);
@@ -125,7 +173,9 @@ h1 span {
     border-color: var(--accent-hover);
 }
 
-.btn-primary:hover { background-color: var(--accent-hover); }
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+}
 
 .btn-icon-only {
     padding: 6px;
@@ -140,7 +190,9 @@ h1 span {
     transition: background 0.2s;
 }
 
-.btn-icon-only:hover { background: rgba(0,0,0,0.05); }
+.btn-icon-only:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
 
 /* ===== Input Group ===== */
 .input-group {
@@ -154,7 +206,9 @@ h1 span {
     transition: border-color 0.2s;
 }
 
-.input-group:focus-within { border-color: #a8a29e; }
+.input-group:focus-within {
+    border-color: #a8a29e;
+}
 
 .input-field {
     background: transparent;
@@ -200,17 +254,22 @@ h1 span {
     position: relative;
 }
 
-.tool-btn span { font-size: 9px; }
-.tool-btn:hover { background-color: #e7e5e4; }
+.tool-btn span {
+    font-size: 9px;
+}
+
+.tool-btn:hover {
+    background-color: #e7e5e4;
+}
 
 .tool-btn.active {
     background-color: #78716c;
     color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transform: translateY(-1px);
 }
 
-.tool-btn svg { 
+.tool-btn svg {
     width: 18px;
     height: 18px;
     fill: currentColor;
@@ -265,14 +324,16 @@ h1 span {
 }
 
 .brush-slider {
-    -webkit-appearance: slider-vertical;
-    writing-mode: bt-lr;
-    width: 8px;
-    height: 140px;
-    background: linear-gradient(to top, #e7e5e4 0%, #78716c 100%);
+    /* 修正：使用標準屬性替代 -webkit-appearance: slider-vertical */
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 140px;
+    height: 8px;
+    background: linear-gradient(to right, #e7e5e4 0%, #78716c 100%);
     border-radius: 4px;
     outline: none;
     cursor: pointer;
+    transform: rotate(180deg);
 }
 
 .brush-slider::-webkit-slider-thumb {
@@ -283,7 +344,7 @@ h1 span {
     border-radius: 50%;
     background: #44403c;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: transform 0.1s;
 }
 
@@ -298,7 +359,7 @@ h1 span {
     background: #44403c;
     cursor: pointer;
     border: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .brush-size-preview {
@@ -342,7 +403,7 @@ h1 span {
     gap: 6px;
     align-items: center;
     padding: 4px 0;
-    background: rgba(0,0,0,0.03);
+    background: rgba(0, 0, 0, 0.03);
     border-radius: 8px;
 }
 
@@ -353,10 +414,12 @@ h1 span {
     cursor: pointer;
     border: 2px solid transparent;
     transition: transform 0.2s, border-color 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.color-swatch:hover { transform: scale(1.1); }
+.color-swatch:hover {
+    transform: scale(1.1);
+}
 
 .color-swatch.active {
     border-color: #78716c;
@@ -373,8 +436,8 @@ h1 span {
 
 /* 自訂顏色選擇器 */
 .color-swatch.custom-color {
-    background: linear-gradient(135deg, 
-        #ef4444 0%, #f59e0b 25%, #10b981 50%, #3b82f6 75%, #8b5cf6 100%);
+    background: linear-gradient(135deg,
+            #ef4444 0%, #f59e0b 25%, #10b981 50%, #3b82f6 75%, #8b5cf6 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -382,7 +445,7 @@ h1 span {
 }
 
 .color-swatch.custom-color svg {
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
     color: white;
 }
 
@@ -465,9 +528,13 @@ canvas {
     transition: background 0.2s;
 }
 
-.zoom-btn:hover { background-color: #e7e5e4; }
+.zoom-btn:hover {
+    background-color: #e7e5e4;
+}
 
-.zoom-btn.fit-btn { font-size: 10px; }
+.zoom-btn.fit-btn {
+    font-size: 10px;
+}
 
 .zoom-text {
     font-size: 10px;
@@ -495,10 +562,12 @@ canvas {
     transform: translateX(100%);
     transition: transform 0.3s;
     z-index: 40;
-    box-shadow: -4px 0 10px rgba(0,0,0,0.05);
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.sidebar.open { transform: translateX(0); }
+.sidebar.open {
+    transform: translateX(0);
+}
 
 .sidebar-header {
     padding: 12px;
@@ -527,7 +596,9 @@ canvas {
     transition: background 0.2s;
 }
 
-.page-item:hover { background: #f5f5f4; }
+.page-item:hover {
+    background: #f5f5f4;
+}
 
 .page-item.active {
     background: #f5f5f4;
@@ -539,7 +610,9 @@ canvas {
     gap: 4px;
 }
 
-.page-item:hover .page-actions { display: flex; }
+.page-item:hover .page-actions {
+    display: flex;
+}
 
 .icon-btn {
     border: none;
@@ -550,8 +623,13 @@ canvas {
     transition: color 0.2s;
 }
 
-.icon-btn:hover { color: var(--text-main); }
-.icon-btn.delete:hover { color: #f87171; }
+.icon-btn:hover {
+    color: var(--text-main);
+}
+
+.icon-btn.delete:hover {
+    color: #f87171;
+}
 
 /* ===== Bottom Controls ===== */
 .bottom-bar {
@@ -567,7 +645,9 @@ canvas {
     pointer-events: none;
 }
 
-.bottom-bar > * { pointer-events: auto; }
+.bottom-bar>* {
+    pointer-events: auto;
+}
 
 .page-nav {
     background: var(--bg-panel);
@@ -593,8 +673,15 @@ canvas {
     transition: background 0.2s;
 }
 
-.nav-btn:hover { background: #e7e5e4; }
-.nav-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.nav-btn:hover {
+    background: #e7e5e4;
+}
+
+.nav-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
 
 #page-indicator {
     font-size: 12px;
@@ -627,7 +714,9 @@ canvas {
     transition: color 0.2s;
 }
 
-.control-btn:hover { color: #fff; }
+.control-btn:hover {
+    color: #fff;
+}
 
 .control-divider {
     width: 1px;
@@ -673,8 +762,13 @@ canvas {
     border-radius: 50%;
 }
 
-input:checked + .slider { background-color: #a8a29e; }
-input:checked + .slider:before { transform: translateX(16px); }
+input:checked+.slider {
+    background-color: #a8a29e;
+}
+
+input:checked+.slider:before {
+    transform: translateX(16px);
+}
 
 /* ===== Fullscreen Mode ===== */
 body.presentation-mode header,
@@ -707,7 +801,9 @@ body.presentation-mode #canvas-wrapper {
     transition: background 0.2s;
 }
 
-#exit-fullscreen-btn:hover { background: rgba(255, 255, 255, 0.4); }
+#exit-fullscreen-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
 
 /* ===== Toast & Loading ===== */
 #toast {
@@ -749,8 +845,13 @@ body.presentation-mode #canvas-wrapper {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 #loading-text {

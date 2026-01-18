@@ -1,6 +1,6 @@
 // ===========================
-// 智能背誦遮罩工具 v4.1 Enhanced
-// 新增功能：Undo/Redo、匯出圖片、自訂顏色、圖片自動適應
+// 智能背誦遮罩工具 v4.2 - 教學版
+// 修復：Gemini API、圖片適應、IndexedDB整合、筆刷單擊
 // ===========================
 
 // ========== 常數定義 ==========
@@ -478,21 +478,20 @@ class SmartMaskApp {
             updatePreview(parseInt(e.target.value));
         });
 
+        // 觸控設備：單擊切換顯示（優化）
         if (!window.matchMedia('(hover: hover)').matches) {
-            let clickCount = 0;
-            let clickTimer = null;
-
-            brushBtn.addEventListener('click', () => {
-                clickCount++;
-
-                if (clickCount === 1) {
-                    clickTimer = setTimeout(() => {
-                        clickCount = 0;
-                    }, 300);
-                } else if (clickCount === 2) {
-                    clearTimeout(clickTimer);
-                    clickCount = 0;
+            brushBtn.addEventListener('click', (e) => {
+                // 如果已經是筆刷模式，切換彈窗
+                if (this.mode === TOOL_MODES.BRUSH) {
                     popup.classList.toggle('show');
+                    e.stopPropagation();
+                }
+            });
+
+            // 點擊其他地方關閉彈窗
+            document.addEventListener('click', (e) => {
+                if (!popup.contains(e.target) && e.target !== brushBtn) {
+                    popup.classList.remove('show');
                 }
             });
         }
@@ -702,7 +701,8 @@ class APIManager {
     }
 
     async callGemini(apiKey, base64Image) {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        // 修正 API 路徑：使用 v1 而非 v1beta
+        const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -1099,9 +1099,14 @@ class PageManager {
 
         this.app.drawingManager.draw();
 
-        // 使用 requestAnimationFrame 確保 DOM 更新後再 fitToScreen
+        // 修正：確保在繪製後才執行 fitToScreen
+        // 使用三層 RAF 確保渲染完成
         requestAnimationFrame(() => {
-            this.app.uiManager.fitToScreen();
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    this.app.uiManager.fitToScreen();
+                });
+            });
         });
     }
 }
